@@ -1,25 +1,37 @@
-const express = require('express')
-const logger = require('morgan')
-const cors = require('cors')
+const express = require("express");
+const logger = require("morgan");
+const cors = require("cors");
 
-const contactsRouter = require('./routes/api/contacts')
+require("dotenv").config();
 
-const app = express()
+// import routes
+const todosRouter = require("./routes/api/todos.route");
+const userRouter = require("./routes/api/user.route");
 
-const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
+// 1-- create web-server
+const app = express();
 
-app.use(logger(formatsLogger))
-app.use(cors())
-app.use(express.json())
+const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
-app.use('/api/contacts', contactsRouter)
+// 2-- Describe global middlewars
+app.use(logger(formatsLogger));
+app.use(cors());
+app.use(express.json());
 
+// 3-- Create routes group
+app.use("/api/todos", todosRouter);
+app.use("/api/user", userRouter);
+
+console.log("Database connection successful");
+
+// 4-- Create errors handles
 app.use((req, res) => {
-  res.status(404).json({ message: 'Not found' })
-})
+  res.status(404).json({ message: "Not found" });
+});
 
 app.use((err, req, res, next) => {
-  res.status(500).json({ message: err.message })
-})
+  const { status = 500, message = "Server error" } = err;
+  res.status(status).json({ message });
+});
 
-module.exports = app
+module.exports = app;
