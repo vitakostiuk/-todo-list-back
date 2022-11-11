@@ -1,7 +1,10 @@
 const { Todo } = require("../../models/Todo");
 
-const findAll = async (owner) => {
-  const result = await Todo.find({ owner }).populate("owner", "email");
+const findAll = async (owner, skip, limit) => {
+  const result = await Todo.find({ owner }, "", {
+    skip,
+    limit: Number(limit),
+  }).populate("owner", "email");
   return result;
 };
 
