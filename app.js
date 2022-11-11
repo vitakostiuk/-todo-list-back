@@ -19,8 +19,8 @@ app.use(cors());
 app.use(express.json());
 
 // 3-- Create routes group
-app.use("/api/todos", todosRouter);
-app.use("/api/user", userRouter);
+app.use("/api/todos/todo-list-frontend-and-backend", todosRouter);
+app.use("/api/user/todo-list-frontend-and-backend", userRouter);
 
 console.log("Database connection successful");
 
